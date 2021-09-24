@@ -39,11 +39,16 @@ const App = () => {
 
     const am_in_keyfile_password = "password";
 
-    const { PDFNet, documentViewer } = wvInstance.Core;
+    const { PDFNet, documentViewer, annotationManager, SaveOptions } = wvInstance.Core;
     await PDFNet.initialize();
 
     // Open an existing PDF
-    const doc = await documentViewer.getDocument().getPDFDoc();
+    const xfdfString = await annotationManager.exportAnnotations();
+    const data = await documentViewer.getDocument().getFileData({
+      xfdfString,
+      flags: SaveOptions.INCREMENTAL,
+    });
+    const doc = await PDFNet.PDFDoc.createFromBuffer(new Uint8Array(data));
 
     const am_approvalSigField = await doc.getField(am_in_approval_field_name);
     const am_found_approvalSigField = await PDFNet.DigitalSignatureField.createFromField(
@@ -90,11 +95,16 @@ const App = () => {
 
     const in_keyfile_password = "password";
 
-    const { PDFNet, documentViewer } = wvInstance.Core;
+    const { PDFNet, documentViewer, annotationManager, SaveOptions } = wvInstance.Core;
     await PDFNet.initialize();
 
     // Open an existing PDF
-    const doc = await documentViewer.getDocument().getPDFDoc();
+    const xfdfString = await annotationManager.exportAnnotations();
+    const data = await documentViewer.getDocument().getFileData({
+      xfdfString,
+      flags: SaveOptions.INCREMENTAL,
+    });
+    const doc = await PDFNet.PDFDoc.createFromBuffer(new Uint8Array(data));
 
     const digSigFieldIterator = await doc.getDigitalSignatureFieldIteratorBegin();
 
