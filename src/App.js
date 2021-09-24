@@ -10,7 +10,8 @@ const App = () => {
     WebViewer(
       {
         path: '/webviewer/lib',
-        initialDoc: '/files/PDFTRON_about.pdf',
+        initialDoc: '/files/two-fields.pdf',
+        fullAPI: true,
       },
       viewer.current,
     ).then((instance) => {
